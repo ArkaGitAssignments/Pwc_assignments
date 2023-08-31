@@ -1,0 +1,97 @@
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Text;
+
+namespace Prj1Day1Con
+{
+   abstract  class Paint
+    {
+    }
+    class Shape : Paint
+    {
+       public virtual void getShape()
+        {
+            Console.Write("Get the shape ");
+        }
+
+    }
+    class Color : Paint
+    {
+       public virtual void getColor()
+        {
+            Console.Write("Get the color ");
+        }
+    }
+    class Triangle : Shape
+    {
+       public override void getShape()
+        {
+            Console.Write("Triangle ");
+        }
+    }
+    class Square : Shape
+    {
+        public override void getShape()
+        {
+            Console.Write("Square ");
+        }
+    }
+    class Circle : Shape
+    {
+        public override void getShape()
+        {
+            Console.Write("Circle ");
+        }
+    }
+    class Red : Color
+    {
+        public override void getColor()
+        {
+            Console.Write("Red ");
+        }
+    }
+    class Green : Color
+    {
+        public override void getColor()
+        {
+            Console.WriteLine("Green");
+        }
+    }
+    class Blue : Color
+    {
+        public override void getColor()
+        {
+            Console.Write("Blue ");
+        }
+    }
+       class draw
+    {
+        public void drawing(Color c, Shape s)
+        {
+            if(s is Square)
+            {
+                Square sq = (Square)s;
+                sq.getShape();
+            }
+            if(c is Red)
+            {
+                Red r = (Red)c;
+                r.getColor();
+            }
+        }
+
+    }
+
+    internal class CastingEx
+    {
+        static void Main()
+        {
+            Shape s = new Square(); 
+            Color c = new Red();
+            draw d= new draw();
+             d.drawing(c,s);
+
+        }
+    }
+}
