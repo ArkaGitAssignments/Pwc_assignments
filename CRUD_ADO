@@ -1,0 +1,466 @@
+// Class1.cs
+
+using System;
+using System.Data.SqlClient;
+using System.Data;
+
+namespace CRUD_ADO
+{
+    public class CRUD
+    {
+        public static int chkValidity(string uname, string pass)
+        {
+            try
+            {
+                //Console.WriteLine("hello");
+                SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-O7LF2JA;Initial Catalog=training;Integrated Security=True");
+                con.Open();
+
+                ///2. Select : Read R of CRUD
+                SqlCommand cmd = new SqlCommand("Select * from loginTbl", con);
+                cmd.CommandType = CommandType.Text;
+                SqlDataReader rdr = cmd.ExecuteReader();
+               // Console.WriteLine("i\tj");
+                    if (uname.Equals("admin") && pass.Equals("cSharp"))
+                        return 1;
+                while (rdr.Read())
+                {
+                    if (rdr.GetString("uname").Equals(uname) && rdr.GetString("passwd").Equals(pass))
+                        return 2;
+                }
+
+
+            }
+            catch (Exception e) { Console.WriteLine(e.ToString()); }
+            return 0;
+        }
+        public static void AddRegs(string regName, string regUname , string regPass)
+        {
+            try
+            {
+                //Console.WriteLine("hello");
+                SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-O7LF2JA;Initial Catalog=training;Integrated Security=True");
+                con.Open();
+
+
+
+                //1. Insert: Create records C of CRUD
+                SqlCommand cmd = new SqlCommand("Insert into LoginTbl values(@regName, @regUname, @regPass)", con);
+                cmd.CommandType = CommandType.Text;
+                cmd.Parameters.AddWithValue("@regName", regName);
+                cmd.Parameters.AddWithValue("@regUname", regUname);
+                cmd.Parameters.AddWithValue("@regPass", regPass);
+                int recIns = cmd.ExecuteNonQuery();
+                Console.WriteLine("Number of rows inserted: " + recIns);
+
+            }
+            catch (Exception e) { Console.WriteLine(e.ToString()); }
+        }
+        public static int PassUp1(string name, string oldPass, string newPass)
+        {
+            int i = 0;
+
+                SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-O7LF2JA;Initial Catalog=training;Integrated Security=True");
+                con.Open();
+                SqlCommand cmd1 = new SqlCommand("Select name from loginTbl where name=@name", con);
+                cmd1.CommandType = CommandType.Text;
+                cmd1.Parameters.AddWithValue("@name", name);
+                SqlDataReader rdr = cmd1.ExecuteReader();
+                while (rdr.Read())
+                {
+                    i++; 
+                }
+
+            if (i == 0)
+            {
+                return 1;
+            }
+            else
+            {
+                rdr.Close();
+                i = 0;
+                string query = $"Select name, passwd from loginTbl where name = '{name}' and passwd = '{oldPass}'";
+                SqlCommand cmd2 = new SqlCommand(query, con);
+                cmd2.CommandType = CommandType.Text;
+                //cmd2.Parameters.AddWithValue("@name", name);
+                //cmd2.Parameters.AddWithValue("@oldPass", oldPass);
+                SqlDataReader rdr1 = cmd2.ExecuteReader();
+                while (rdr1.Read())
+                {
+                    i++;
+                }
+                if (i == 0)
+                    return 2;
+                else
+                {
+                    if (oldPass.Equals(newPass))
+                        return 3;
+                    else
+                    {
+                        rdr1.Close();
+                        SqlCommand cmd3 = new SqlCommand("Update loginTbl set passwd=@newPass where name=@name", con);
+                        cmd3.CommandType = CommandType.Text;
+                        cmd3.Parameters.AddWithValue("@newPass", newPass);
+                        cmd3.Parameters.AddWithValue("@name", name);
+                        cmd3.ExecuteNonQuery();
+                        Console.WriteLine("Data updated");
+                        return 0;
+                    }
+                }
+            }
+
+        }
+        public static Boolean DeleteUser(string name, string uname, string pass)
+        {
+            try
+            {
+                //Console.WriteLine("hello");
+                SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-O7LF2JA;Initial Catalog=training;Integrated Security=True");
+                con.Open();
+                //////4. Delete: D of CRUD
+                SqlCommand cmd = new SqlCommand("Delete from loginTbl where name=@name and uname=@uname and passwd=@pass", con);
+                cmd.Parameters.AddWithValue("@name", name);
+                cmd.Parameters.AddWithValue("@uname", uname);
+                cmd.Parameters.AddWithValue("@pass", pass);
+                cmd.CommandType = CommandType.Text;
+                int rec = cmd.ExecuteNonQuery();
+                if(rec > 0)
+                { return true; }
+                    
+            }
+            catch (Exception e) { return false; }
+            return false;
+
+        }
+    }
+}
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// LoginController.cs
+
+using Microsoft.AspNetCore.Mvc;
+
+namespace Day29MVC.Controllers
+{
+    public class LoginController : Controller
+    {
+        public IActionResult Index()
+        {
+            return View();
+
+        }
+        public IActionResult mySite(string uname, string pass)
+        {
+            int x = (CRUD_ADO.CRUD.chkValidity(uname, pass));
+              if(x==1)
+                return RedirectToAction("AdminView");
+              if(x==2)
+                return RedirectToAction("Success");
+              else
+                return RedirectToAction("Failure");
+
+        }
+        public IActionResult AdminView()
+        {
+            return View();
+        }
+        public IActionResult DeleteUser(string name, string uname, string pass) 
+        {
+            if (CRUD_ADO.CRUD.DeleteUser(name, uname, pass))
+                return RedirectToAction("IDdel");
+            else
+                return RedirectToAction("IDnotdel");
+        }
+        public IActionResult IDdel()
+        { return View(); }
+        public IActionResult IDnotdel()
+        { return View(); }
+        public IActionResult Regs1()
+        {
+            return View();
+        }
+        public IActionResult Regs(string new_name, string new_uname, string new_pass)
+        {
+            CRUD_ADO.CRUD.AddRegs(new_name, new_uname, new_pass);
+                return RedirectToAction("LoginDn");
+        }
+        public IActionResult LoginDn()
+        {
+            return View();
+        }
+        public IActionResult Pass1()
+        {
+            return View();
+        }
+
+        public IActionResult Pass2(string name, string old_pass, string new_pass)
+        {
+            int x = (CRUD_ADO.CRUD.PassUp1(name, old_pass, new_pass));
+            if (x == 1)
+                return RedirectToAction("NoName");
+            else if (x == 2)
+                return RedirectToAction("NoPass");
+            else if (x == 3)
+                return RedirectToAction("NoChngPass");
+            else
+                return RedirectToAction("ChngPass");
+        }
+        public IActionResult ChngPass()
+        {
+            return View();
+        }
+        public IActionResult NoChngPass()
+        {
+            return View();
+        }
+        public IActionResult NoName()
+        {
+            return View();
+        }
+        public IActionResult NoPass()
+        {
+            return View();
+        }
+        public IActionResult Success()
+        {
+            return View();
+        }
+        public IActionResult Failure()
+        {
+            return View();
+        }
+    }
+}
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// AdminView.cshtml
+
+<h1>
+	Delete User!!
+	<br />
+
+	<form action="/Login/DeleteUser">
+
+		<table>
+			<tr>
+				<td>Enter your Name:</td>
+				<td><input type="text" name="name" /></td>
+			</tr>
+			<tr>
+				<td>Enter your Username:</td>
+				<td><input type="text" name="uname" /></td>
+			</tr>
+			<tr>
+				<td>Enter new password:</td>
+				<td><input type="text" name="pass" /></td>
+			</tr>
+			<tr>
+				<td rowspan="2"><input type="submit" value="DELETE" /></td>
+			</tr>
+		</table>
+
+
+	</form>
+</h1>
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// ChngPass.cshtml
+
+<h1>
+	Password updated!!
+	<br />
+	<a href="/Login/Index">Back to Home Page!</a>
+</h1>
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// Failure.cshtml
+
+<h1>
+   You are not Authenticated by our server! Please login with correct credentials!
+</h1>
+
+<h3>
+	<a href="/Login/Index">Login Page Again</a>
+</h3>
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// IDdel.cshtml
+<h1>
+	ID deleted !!
+
+<br />
+<a href="/Login/Index">Back to Home Page</a>
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// IDnotdel.cshtml
+
+<h1>
+	ID not deleted !!
+
+	<br />
+	<a href="/Login/Index">Back to Home Page</a>
+</h1>
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// Index.cshtml
+
+<h1>
+	Login to enter to the Site:
+
+	<br />
+
+
+	<form action="/Login/mySite">
+		
+	<table>
+		<tr>
+			<td>Enter login id:</td>
+			<td><input type="text" name="uname" /></td>
+		</tr>
+		<tr>
+			<td>Enter password:</td>
+			<td><input type="text" name="pass" /></td>
+		</tr>
+		<tr>
+			<td rowspan="2"><input type="submit" value="login" /></td>
+		</tr>
+	</table>
+	
+
+	</form>
+	<br />
+	<a href="/Login/Regs1">Register Now</a>
+	<br />
+	<a  href="/Login/Pass1">Change Password</a>
+</h1>
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// LoginDn.cshtml
+
+<h1>
+	You have succesfully registered to your system!!
+	<br />
+	<br />
+
+
+	<a  href="/Login/Index">Back to Home page !!</a>
+</h1>
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// NoChngPass.cshtml
+
+<h1>
+	Updated Password is same as before!!
+	<br />
+	<a href="/Login/Index">Back to Home Page</a>
+
+</h1>
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// NoName.cshtml
+
+<h1>
+	The Name entered does not exist!!
+	<br />
+	<a href="/Login/Index">Back to Home page</a>
+</h1>
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// NoPass.cshtml
+
+<h1>
+	The password does not match the Name!!
+	<br />
+	<a href="/Login/Index">Back to Home page</a>
+</h1>
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// Pass1.cshtml
+
+<h1>
+	Changer your password!!
+	<br />
+
+	<form action="/Login/Pass2">
+
+		<table>
+			<tr>
+				<td>Enter your Name:</td>
+				<td><input type="text" name="name" /></td>
+			</tr>
+			<tr>
+				<td>Enter your old password:</td>
+				<td><input type="text" name="old_pass" /></td>
+			</tr>
+			<tr>
+				<td>Enter new password:</td>
+				<td><input type="text" name="new_pass" /></td>
+			</tr>
+			<tr>
+				<td rowspan="2"><input type="submit" value="CHANGE" /></td>
+			</tr>
+		</table>
+
+
+	</form>
+</h1>
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// Regs1.cshtml
+
+<h1>
+	Welcome to our site!! Enter your credentials!!
+	<br />
+
+	<form action="/Login/Regs">
+
+		<table>
+			<tr>
+				<td>Enter your Name:</td>
+				<td><input type="text" name="new_name" /></td>
+			</tr>
+			<tr>
+				<td>Enter your Username:</td>
+				<td><input type="text" name="new_uname" /></td>
+			</tr>
+			<tr>
+				<td>Enter password:</td>
+				<td><input type="text" name="new_pass" /></td>
+			</tr>
+			<tr>
+				<td rowspan="2"><input type="submit" value="REGISTER" /></td>
+			</tr>
+		</table>
+
+
+	</form>
+</h1>
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// Success.cshtml
+
+<h1>
+	Welcome to our Site !! You are Authenticated by our server!
+</h1>
+
+<h3>
+<a href="/Login/Index">Login Page Again</a>
+</h3>
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+</h1>
+
