@@ -1,0 +1,801 @@
+//Models
+
+------------------------------------------------------
+//Student.cs
+
+namespace Day30MVC.Models
+{
+    public class Student
+    {
+        public string name { get; set; }
+        public int id { get; set; }
+        public string course { get; set; }
+        public string duration { get; set; }
+        public int year { get; set; }
+        public int fees { get; set; }
+
+        public Student(string name, int id, string course, string duration, int year, int fees)
+        {
+            this.name = name;
+            this.id = id;
+            this.course = course;
+            this.duration = duration;
+            this.year = year;
+            this.fees = fees;
+        }
+
+        public Student() { }
+
+        public override string ToString()
+        {
+            return "\nName: " + name + " id: " + id + " course: " + course + " duration: " + duration + " year: " + year + " fees: " + fees;
+        }
+    }
+}
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//StudentList.cs
+
+using System.Collections.Generic;
+using System;
+using Day30MVC.Models;
+
+namespace Day30MVC.Models
+{
+    public class StudentList
+    {
+        public List<Student> stud = new List<Student>();
+        public StudentList(List<Student> stud) { this.stud = stud; }
+        public StudentList(Student std) { this.stud.Add(std); }
+        public StudentList()
+        {
+            this.AddStd(new Student("Amol", 101, "Engg", "4 years", 2019, 10000));
+			this.AddStd(new Student("Amol", 109, "Engg", "4 years", 2019, 10000));
+			this.AddStd(new Student("Sayed", 102, "Medical", "5 years", 2020, 50000));
+            this.AddStd(new Student("Lee", 103, "Engg", "4 years", 2019, 40000));
+        }
+
+        public void AddStd(Student student)
+        {
+            this.stud.Add(student);
+        }
+		public void AddStd(string name, int id , string course, string duration, int year, int fees)
+        
+        { this.stud.Add(new Student(name,id,course,duration,year,fees)); }
+        public void DispStd()
+        {
+            foreach (Student s in stud)
+            {
+                Console.WriteLine(s);
+            }
+        }
+        public void DelStd(int id)
+        {
+            foreach (Student s in stud)
+            {
+                if (s.id == id)
+                {
+                    stud.Remove(s);
+                    return;
+                }
+            }
+        }
+        
+        public List<Student> getStdByName(string name)
+        {
+           List<Student> stud1 = new List<Student>();
+
+            foreach (Student s in stud)
+            {
+                if (s.name.Equals(name))
+                {
+                   stud1.Add(s);
+                }
+            }
+
+            // Employee e2 = emps.Find(ee => ee.name.Equals(name));
+            return stud1;
+        }
+        public List<Student> getStdById(int id)
+        {
+            List<Student> stud2 = new List<Student>();
+            Student e = new Student("default", 100, "course", "0 years", 1000, 0);
+            foreach (Student s in stud)
+            {
+                if (s.id == id)
+                {
+                    stud2.Add(s);
+                }
+            }
+
+            // Employee e2 = emps.Find(ee => ee.name.Equals(name));
+            return stud2;
+        }
+        public List<Student> getStdByCourse(string course)
+        {
+			List<Student> stud2 = new List<Student>();
+			foreach (Student s in stud)
+            {
+                if (s.course.Equals(course))
+                {
+					stud2.Add(s);
+				}
+            }
+
+            // Employee e2 = emps.Find(ee => ee.name.Equals(name));
+            return stud2;
+        }
+        public List<Student> getStdByDuration(string duration)
+        {
+			List<Student> stud2 = new List<Student>();
+			foreach (Student s in stud)
+            {
+                if (s.duration.Equals(duration))
+                {
+                    stud2.Add(s);
+                }
+            }
+
+            // Employee e2 = emps.Find(ee => ee.name.Equals(name));
+            return stud2;
+        }
+		public List<Student> getStdByEnroll(int year)
+		{
+			List<Student> stud2 = new List<Student>();
+			foreach (Student s in stud)
+			{
+				if (s.year == year)
+				{
+					stud2.Add(s);
+				}
+			}
+
+			// Employee e2 = emps.Find(ee => ee.name.Equals(name));
+			return stud2;
+		}
+		public List<Student> getStdByFees(int fees)
+        {
+			List<Student> stud2 = new List<Student>();
+			foreach (Student s in stud)
+            {
+                if (s.fees == fees)
+                {
+                    stud2.Add(s);
+                }
+            }
+
+            // Employee e2 = emps.Find(ee => ee.name.Equals(name));
+            return stud2;
+        }
+        public void Update(int id, string name, string course, string duration, int year, int fees)
+        {
+            foreach(Student s in stud)
+            {
+                if(s.id == id)
+                {
+                    s.name=name;
+                    s.id=id;
+                    s.course=course;
+                    s.duration=duration;
+                    s.year=year;
+                    s.fees=fees;
+                }
+            }
+        }
+    }
+}
+--------------------------------------------------------------------------------------------------------------------------------------------------
+//Controller
+
+//StudentController.cs
+
+using Day30MVC.Models;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Globalization;
+
+namespace Day30MVC.Controllers
+{
+    public class StudentController : Controller
+    {
+		static StudentList student = new StudentList();
+		public IActionResult Index()
+        {
+            return View();
+        }
+        public  IActionResult ListView()
+        {
+            return View(student.stud);
+        }
+		public IActionResult SelectedView()
+		{
+			return View(student.stud);
+		}
+		public IActionResult AddStd1()
+		{
+			return View();
+		}
+        public IActionResult AddStd(string name, int id, string course, string duration, int year, int fees)
+        {
+            duration = duration + " years";
+            Student stud = new Student(name, id ,course, duration, year, fees);
+            student.AddStd(name, id, course, duration, year, fees);
+            return RedirectToAction("Index");
+        }
+		public IActionResult ByName(string name)
+        {
+            return View(student.getStdByName(name));
+        }
+        public IActionResult ByID(int id)
+        {
+            return View(student.getStdById(id));
+        }
+        public IActionResult ByCourse(string course)
+        {
+            return View(student.getStdByCourse(course));
+        }
+		public IActionResult ByDuration(string duration)
+		{
+            duration = duration + " years";
+			return View(student.getStdByDuration(duration));
+		}
+        public IActionResult ByEnrollment(int year)
+        {
+            return View(student.getStdByEnroll(year));
+        }
+		public IActionResult ByFees(int fees)
+		{
+			return View(student.getStdByFees(fees));
+		}
+		public IActionResult Delete()
+        {
+            return View();
+        }
+        public IActionResult Update1()
+        {
+            return View();
+        }
+        public IActionResult Update(int id , string name, string course, string duration, int year, int fees)
+        {
+            duration = duration + " years";
+            student.Update(id, name, course, duration, year, fees);
+            return RedirectToAction("Index");
+        }
+        public IActionResult DelStd(int id) 
+        { 
+            student.DelStd(id);
+            return RedirectToAction("Index");
+        }
+    }
+}
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//Views
+
+//AddStd1.cshtml
+
+<h1>
+	<form action="/Student/AddStd">
+
+		<table>
+			<tr>
+				<td>
+					Name:
+				</td>
+				<td>
+					<input type="text" name="name" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					ID:
+				</td>
+				<td>
+					<input type="text" name="id" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Course:
+				</td>
+				<td>
+					<input type="text" name="course" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Duration in Years:
+				</td>
+				<td>
+					<input type="text" name="duration" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Year of Enrollment:
+				</td>
+				<td>
+					<input type="text" name="year" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Fees:
+				</td>
+				<td>
+					<input type="text" name="fees" />
+				</td>
+			</tr>
+			<tr>
+				<td rowspan="2">
+					<input type="submit" value="Add" />
+				</td>
+			</tr>
+		</table>
+	</form>
+</h1>
+
+<br />
+<br />
+
+<h3>
+	Click the required action:
+	<br />
+	<a href="/Student/Index">Back to Home Page</a>
+	<br />
+	<a href="/Student/ListView">View the List of Students</a>
+	<br />
+	<a href="/Student/SelectedView">Catagorised View</a>
+	<br />
+	<a href="/Student/Update1">Update the List of Students</a>
+	<br />
+	<a href="/Student/Delete">Delete the List of Students</a>
+</h3>
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//ByCourse.cshtml
+
+@model IEnumerable< Day30MVC.Models.Student >
+
+@foreach (var emp in Model)
+{
+	<div>
+		@emp
+		<hr />
+	</div>
+}
+
+<br />
+<br />
+
+<h3>
+	Click the required action:
+	<br />
+	<a href="/Student/Index">Back to Home Page</a>
+	<br />
+	<a href="/Student/ListView">View the List of Students</a>
+	<br />
+	<a href="/Student/SelectedView">Catagorised View</a>
+	<br />
+	<a href="/Student/AddStd1">Add a student</a>
+	<br />
+	<a href="/Student/Update1">Update the List of Students</a>
+	<br />
+	<a href="/Student/Delete">Delete the List of Students</a>
+</h3>
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//ByDuration.cshtml
+
+@model IEnumerable< Day30MVC.Models.Student >
+
+@foreach (var emp in Model)
+{
+	<div>
+		@emp
+		<hr />
+	</div>
+}
+<br />
+<br />
+
+<h3>
+	Click the required action:
+	<br />
+	<a href="/Student/Index">Back to Home Page</a>
+	<br />
+	<a href="/Student/ListView">View the List of Students</a>
+	<br />
+	<a href="/Student/SelectedView">Catagorised View</a>
+	<br />
+	<a href="/Student/AddStd1">Add a student</a>
+	<br />
+	<a href="/Student/Update1">Update the List of Students</a>
+	<br />
+	<a href="/Student/Delete">Delete the List of Students</a>
+</h3>
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//ByEnrollment.cshtml
+
+@model IEnumerable< Day30MVC.Models.Student >
+
+@foreach (var emp in Model)
+{
+	<div>
+		@emp
+		<hr />
+	</div>
+}
+<br />
+<br />
+
+<h3>
+	Click the required action:
+	<br />
+	<a href="/Student/Index">Back to Home Page</a>
+	<br />
+	<a href="/Student/ListView">View the List of Students</a>
+	<br />
+	<a href="/Student/SelectedView">Catagorised View</a>
+	<br />
+	<a href="/Student/AddStd1">Add a student</a>
+	<br />
+	<a href="/Student/Update1">Update the List of Students</a>
+	<br />
+	<a href="/Student/Delete">Delete the List of Students</a>
+</h3>
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//ByFees.cshtml
+
+@model IEnumerable< Day30MVC.Models.Student >
+
+@foreach (var emp in Model)
+{
+	<div>
+		@emp
+		<hr />
+	</div>
+}
+
+<br />
+<br />
+<h3>
+	Click the required action:
+	<br />
+	<a href="/Student/Index">Back to Home Page</a>
+	<br />
+	<a href="/Student/ListView">View the List of Students</a>
+	<br />
+	<a href="/Student/SelectedView">Catagorised View</a>
+	<br />
+	<a href="/Student/AddStd1">Add a student</a>
+	<br />
+	<a href="/Student/Update1">Update the List of Students</a>
+	<br />
+	<a href="/Student/Delete">Delete the List of Students</a>
+</h3>
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//ByID.cshtml
+@model IEnumerable< Day30MVC.Models.Student >
+
+@foreach (var emp in Model)
+{
+	<div>
+		@emp
+		<hr />
+	</div>
+}
+
+<br />
+<br />
+
+<h3>
+	Click the required action:
+	<br />
+	<a href="/Student/Index">Back to Home Page</a>
+	<br />
+	<a href="/Student/ListView">View the List of Students</a>
+	<br />
+	<a href="/Student/SelectedView">Catagorised View</a>
+	<br />
+	<a href="/Student/AddStd1">Add a student</a>
+	<br />
+	<a href="/Student/Update1">Update the List of Students</a>
+	<br />
+	<a href="/Student/Delete">Delete the List of Students</a>
+</h3>
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//ByName.cshtml
+@model IEnumerable< Day30MVC.Models.Student >
+
+@foreach (var emp in Model)
+{
+	<div>
+		@emp
+		<hr />
+	</div>
+}
+
+<br />
+<br />
+
+<h3>
+	Click the required action:
+	<br />
+	<a href="/Student/Index">Back to Home Page</a>
+	<br />
+	<a href="/Student/ListView">View the List of Students</a>
+	<br />
+	<a href="/Student/SelectedView">Catagorised View</a>
+	<br />
+	<a href="/Student/AddStd1">Add a student</a>
+	<br />
+	<a href="/Student/Update1">Update the List of Students</a>
+	<br />
+	<a href="/Student/Delete">Delete the List of Students</a>
+</h3>
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//Delete.cshtml
+
+<h1>
+	Delete a student by the ID:
+	<br />
+	<form action="/Student/DelStd">
+
+		ID:
+		<br />
+		<input type="text" name="id" />
+		<br />
+		<input type="submit" value="Delete" />
+		</form>
+</h1>
+
+<br />
+<br />
+<h3>
+	Click the required action:
+	<br />
+	<a href="/Student/Index">Back to Home Page</a>
+	<br />
+	<a href="/Student/ListView">View the List of Students</a>
+	<br />
+	<a href="/Student/SelectedView">Catagorised View</a>
+	<br />
+	<a href="/Student/AddStd1">Add a student</a>
+	<br />
+	<a href="/Student/Update1">Update the List of Students</a>
+</h3>
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+//Index.cshtml
+
+<h1>
+	Click the required action:
+	<br />
+	<a href="/Student/ListView">View the List of Students</a>
+	<br />
+	<a href="/Student/SelectedView">Catagorised View</a>
+	<br />
+	<a href="/Student/AddStd1">Add a student</a>
+	<br />
+	<a href="/Student/Update1">Update the List of Students</a>
+	<br />
+	<a href="/Student/Delete">Delete the List of Students</a>
+</h1>
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+//ListView.cshtml
+
+@model IEnumerable< Day30MVC.Models.Student>
+
+@foreach (var emp in Model)
+{
+	<div>
+		@emp
+		<hr />
+	</div>
+}
+
+<br />
+<br />
+<h3>
+	Click the required action:
+	<br />
+	<a href="/Student/Index">Back to Home Page</a>
+	<br />
+	<a href="/Student/SelectedView">Catagorised View</a>
+	<br />
+	<a href="/Student/AddStd1">Add a student</a>
+	<br />
+	<a href="/Student/Update1">Update the List of Students</a>
+	<br />
+	<a href="/Student/Delete">Delete the List of Students</a>
+</h3>
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+//SelectedView.cshtml
+
+<h3>Search by Name:</h3>
+<br />
+	<form action="/Student/ByName">
+		Name:
+		<br />
+		<input type="text" name="name" />
+		<br />
+
+		<input type="submit" value="search" />
+	</form>
+	<br />
+	<br />
+<h3>Search by ID:</h3>
+<br />
+<form action="/Student/ByID">
+	ID:
+	<br />
+	<input type="text" name="id" />
+	<br />
+
+	<input type="submit" value="search" />
+</form>
+<br />
+<br />
+<h3>Search by Course:</h3>
+<br />
+<form action="/Student/ByCourse">
+	Course:
+	<br />
+	<input type="text" name="course" />
+	<br />
+
+	<input type="submit" value="search" />
+</form>
+<br />
+<br />
+<h3>Search by Duration in Years:</h3>
+<br />
+<form action="/Student/ByDuration">
+	Duration:
+	<br />
+	<input type="text" name="duration" />
+	<br />
+
+	<input type="submit" value="search" />
+</form>
+<br />
+<br />
+<h3>Search by Year of Enrollment:</h3>
+<br />
+<form action="/Student/ByEnrollment">
+	Enrollment Year:
+	<br />
+	<input type="text" name="year" />
+	<br />
+
+	<input type="submit" value="search" />
+</form>
+<br />
+<br />
+<h3>Search by Fees:</h3>
+<br />
+<form action="/Student/ByFees">
+	Fees:
+	<br />
+	<input type="text" name="fees" />
+	<br />
+
+	<input type="submit" value="search" />
+</form>
+
+	<br />
+	<br />
+<h3>
+	Click the required action:
+	<br />
+	<a href="/Student/Index">Back to Home Page</a>
+	<br />
+	<a href="/Student/ListView">View the List of Students</a>
+	<br />
+	<a href="/Student/SelectedView">Catagorised View</a>
+	<br />
+	<a href="/Student/AddStd1">Add a student</a>
+	<br />
+	<a href="/Student/Update1">Update the List of Students</a>
+	<br />
+	<a href="/Student/Delete">Delete the List of Students</a>
+</h3>
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//Update1.cshtml
+
+<h1>
+	Update Employee Details by ID:
+	<form action="/Student/Update">
+
+		<table>
+			<tr>
+				<td>
+					ID:
+				</td>
+				<td>
+					<input type="text" name="id" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Name:
+				</td>
+				<td>
+					<input type="text" name="name" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Course:
+				</td>
+				<td>
+					<input type="text" name="course" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Duration in Years:
+				</td>
+				<td>
+					<input type="text" name="duration" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Year of Enrollment:
+				</td>
+				<td>
+					<input type="text" name="year" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Fees:
+				</td>
+				<td>
+					<input type="text" name="fees" />
+				</td>
+			</tr>
+			<tr>
+				<td rowspan="2">
+					<input type="submit" value="Update" />
+				</td>
+			</tr>
+		</table>
+	</form>
+</h1>
+
+<br />
+<br />
+
+<h3>
+	Click the required action:
+	<br />
+	<a href="/Student/Index">Back to Home Page</a>
+	<br />
+	<a href="/Student/ListView">View the List of Students</a>
+	<br />
+	<a href="/Student/SelectedView">Catagorised View</a>
+	<br />
+	<a href="/Student/AddStd1">Add a student</a>
+	<br />
+	<a href="/Student/Delete">Delete the List of Students</a>
+</h3>
+
