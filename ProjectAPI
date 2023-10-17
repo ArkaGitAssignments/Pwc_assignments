@@ -132,3 +132,36 @@ namespace Dummy_API1
     }
 }
 **********************************************************************************************************************************
+LocationController
+
+using Dummy_API1.Model;
+using Dummy_API1.Service;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Dummy_API1.Controllers
+{
+    [ApiController]
+    [Route("api/location")]
+    public class LocationController : ControllerBase
+    {
+        private readonly ILocationService locationService;
+
+        public LocationController(ILocationService service)
+        {
+            locationService = service;
+        }
+
+        [HttpPost("calculate-distance")]
+        public IActionResult CalculateDistance([FromBody] LocationData locationData)
+        {
+            double distance = locationService.CalculateDistance(
+                locationData.Latitude1, locationData.Longitude1,
+                locationData.Latitude2, locationData.Longitude2, locationData.Lat1D, locationData.Lat2D,
+                locationData.Lon1D, locationData.Lon2D);
+            locationData.Distance = distance;
+            return Ok(locationData);
+        }
+    }
+
+}
