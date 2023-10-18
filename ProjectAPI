@@ -272,3 +272,39 @@ namespace Dummy_API1.Controllers
     }
 
 }
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+  Latitude 1<input type="text" [(ngModel)]="Latitude1" name="Latitude1">            
+        <select [(ngModel)]="Lat1D">
+            <option>N</option>
+            <option>S</option>
+        </select>
+        <br>
+        Latitude 2<input type="text" [(ngModel)]="Latitude2" name="Latitude2">
+        <select [(ngModel)]="Lat2D">
+            <option>N</option>
+            <option>S</option>
+        </select>
+        <br>
+        Longitude 1<input type="text" [(ngModel)]="Longitude1" name="Longitude1">
+        <select [(ngModel)]="Lon1D">
+            <option>W</option>
+            <option>E</option>
+        </select>
+        <br>
+        Longitude 2<input type="text" [(ngModel)]="Longitude2" name="Longitude2">
+        <select [(ngModel)]="Lon2D">
+            <option>W</option>
+            <option>E</option>
+        </select>
+        <br>
+        <input type="submit" value="Calculate" (click)="dist()">
+        <input type="submit" value="Reset" (click)="erase()">
+    <!--<form>-->
+        <br>
+        <table border="1">
+            <tr><th>Distance</th></tr>
+            <tr *ngFor="let s of LocationData">
+            <td>{{s.distance}}</td>
+            </tr>
+            </table>
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
