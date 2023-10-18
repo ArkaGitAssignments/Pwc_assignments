@@ -1,3 +1,150 @@
+<h4>{{studs|json}}</h4>
+
+<table border="1">
+<tr><th>students List</th></tr>
+<tr *ngFor="let s of studs">
+<td>{{s|json}}</td>
+</tr>
+</table>
+<hr>
+
+
+<table border="1">
+<tr><th>StudentID</th><th>Name</th><th>SurName</th></tr>
+<tr *ngFor="let s of studs">
+<td>{{s.studentId}}</td>
+<td>{{s.name}}</td>
+<td>{{s.surName}}</td>
+</tr>
+</table>
+<form>
+    <input type="text" [(ngModel)]="id_value" name="id">
+    <br>
+    <input type="submit" value="submit" (click)="fun()">
+</form>
+<table border="1">
+    <tr><th>StudentID</th><th>Name</th><th>SurName</th></tr>
+    <tr *ngFor="let s of studs1">
+    <td>{{s.studentId}}</td>
+    <td>{{s.name}}</td>
+    <td>{{s.surName}}</td>
+    </tr>
+    </table>
+    <br>
+    <input [(ngModel)]="fullname" >
+    <br>
+    {{fullname}}
+    <!--<form>-->
+        <div>
+        Latitude 1<input type="text" [(ngModel)]="Latitude1" name="Latitude1">            
+        <select [(ngModel)]="Lat1D">
+            <option>N</option>
+            <option>S</option>
+        </select>
+        </div>
+        <br>
+        Latitude 2<input type="text" [(ngModel)]="Latitude2" name="Latitude2">
+        <select [(ngModel)]="Lat2D">
+            <option>N</option>
+            <option>S</option>
+        </select>
+        <br>
+        Longitude 1<input type="text" [(ngModel)]="Longitude1" name="Longitude1">
+        <select [(ngModel)]="Lon1D">
+            <option>W</option>
+            <option>E</option>
+        </select>
+        <br>
+        Longitude 2<input type="text" [(ngModel)]="Longitude2" name="Longitude2">
+        <select [(ngModel)]="Lon2D">
+            <option>W</option>
+            <option>E</option>
+        </select>
+        <br>
+        <input type="submit" value="Calculate" (click)="dist()">
+        <input type="submit" value="Reset" (click)="erase()">
+    <!--<form>-->
+        <br>
+        <table border="1">
+            <tr><th>Distance</th></tr>
+            <tr *ngFor="let s of LocationData">
+            <td>{{s.distance}}</td>
+            </tr>
+            </table>
+            <select [(ngModel)]="Lat1">
+                <option>N</option>
+                <option>S</option>
+            </select>
+            {{Lat1}}
+
+            <body>
+ 
+                <div class="container">  
+                 
+                 <h1>Distance Calculator</h1>
+                      <div class="row">
+                       <div class ="lines">
+                         <label for="Lat1">Latitude 1</label>
+                         <input type="text" [(ngModel)]="Latitude1" name="Latitude1" class="val">            
+                       <select [(ngModel)]="Lat1D" class="opt">
+                           <option>N</option>
+                           <option>S</option>
+                       </select></div>
+                     
+                       <div class ="lines">
+                         <label for="Lat2">Latitude 2</label>
+                         <input type="text" [(ngModel)]="Latitude2"  name="Latitude2" class="val">
+                       <select [(ngModel)]="Lat2D" class="opt">
+                           <option>N</option>
+                           <option>S</option>
+                       </select></div>
+                     </div> 
+                     
+                     <div class="row">
+                       <div class ="lines">
+                         <label for="lon1">Longitude 1</label>
+                         <input type="text" [(ngModel)]="Longitude1" name="Longitude1" class="val">
+                       <select [(ngModel)]="Lon1D" class="opt">
+                           <option>W</option>
+                           <option>E</option>
+                       </select></div>
+                      
+                       <div class ="lines">
+                         <label for="lon2">Longitude 2</label>
+                         <input type="text" [(ngModel)]="Longitude2" name="Longitude2" class="val">
+                       <select [(ngModel)]="Lon2D" class="opt">
+                           <option>W</option>
+                           <option>E</option>
+                       </select></div>
+                     </div>
+                     
+                     <div class="btn">
+                       <input type="submit" value="Calculate" (click)="dist()" class="btn1">
+                       <input type="submit" value="Reset" (click)="erase()" class="btn2">
+                     </div>
+                     
+                   <!--<form>-->
+                       <br>
+                       <div class="result">
+                        <table>
+                            <tr><th>Distance</th></tr>
+                            <tr *ngFor="let s of LocationData">
+                            <td class="val">{{s.distance}}</td>
+                            </tr>
+                            </table> 
+                         <!-- <label for="Distance">Distance</label>
+                         <input type="text" name="Distance" class="val"> -->
+                         </div>
+                         
+                     </div>
+                   </body>
+               
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 html code:
 
 
