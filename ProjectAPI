@@ -1,3 +1,56 @@
+<table>
+    <tr>
+        <th colspan="4">Calculate distance</th>
+    </tr>
+    <tr>
+        <td colspan="2"><label for="latitude1" class="form-label" style="font-size: 30px;">Latitude 1</label> </td>
+        <td colspan="2"><label for="latitude2" class="form-label" style="font-size: 30px;">Latitude 2</label> </td>
+    </tr>
+    <tr>
+        <td><input type="text" class="form-control" id="latitude1"> </td>
+        <td>
+        <select name="direction" id="direction">
+            <option value="N">N</option>
+            <option value="S">S</option>
+        </select>
+        </td>
+        <td><input type="text" class="form-control" id="latitude2"></td>
+        <td>
+            <select name="direction" id="direction">
+                <option value="N">N</option>
+                <option value="S">S</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2"><label for="longitude1" class="form-label" style="font-size: 30px;">Longitude 1</label> </td>
+        <td colspan="2"><label for="longitude2" class="form-label" style="font-size: 30px;">Longitude 2</label> </td>
+    </tr>
+    <tr>
+        <td><input type="text" class="form-control" id="longitude1"> </td>
+        <td>
+        <select name="direction" id="direction">
+            <option value="W">W</option>
+            <option value="E">E</option>
+        </select>
+        </td>
+        <td><input type="text" class="form-control" id="longitude2"></td>
+        <td>
+            <select name="direction" id="direction">
+                <option value="W">W</option>
+                <option value="E">E</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="4"><input style="width: 90%;color:blue; font-size: medium;" type="submit" value="submit"></td>
+    </tr>
+    <tr>
+        <td colspan="4"><input style="width: 90%;" type="text" placeholder="distance" class="distance" name="distance"></td>
+    </tr>
+</table>
+
+*********************************************************************************************************************
 HTML CODE:
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,places"></script>
 
