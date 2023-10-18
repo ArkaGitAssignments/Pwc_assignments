@@ -1,15 +1,18 @@
 
 CSS Main wala:
+
+
 .center{
     margin-left: auto;
     margin-right: auto;
-    margin-top: 250px;
+    margin-top: 200px;
     margin-bottom: 0;
 }
 
 .heading{
-    font-size: xx-large;
-    padding-top: auto;
+    font-size: 50px;
+    font-weight: 300;
+    padding-top: 50px;
 }
 
 #direction{
@@ -21,63 +24,79 @@ CSS Main wala:
     
 }
 
+.lat{
+    padding: auto;
+}
+
+th, td {
+    padding-top: 10px;
+    padding-bottom: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
 ***********************************************************************************************
 
 
 
 
 HTML:
-<table>
-    <tr>
-        <th colspan="4">Calculate distance</th>
-    </tr>
-    <tr>
-        <td colspan="2"><label for="latitude1" class="form-label" style="font-size: 30px;">Latitude 1</label> </td>
-        <td colspan="2"><label for="latitude2" class="form-label" style="font-size: 30px;">Latitude 2</label> </td>
-    </tr>
-    <tr>
-        <td><input type="text" class="form-control" id="latitude1"> </td>
-        <td>
-        <select name="direction" id="direction">
-            <option value="N">N</option>
-            <option value="S">S</option>
-        </select>
-        </td>
-        <td><input type="text" class="form-control" id="latitude2"></td>
-        <td>
+<form class="border p-3 rounded-3" >
+    <table class="center">
+        <tr>
+            <th class="heading" colspan="4">Calculate distance</th>
+        </tr>
+        <tr class="lat">
+            <td colspan="2"><label for="latitude1" class="form-label" style="font-size: 25px;">Latitude 1</label> </td>
+            <td colspan="2"><label for="latitude2" class="form-label" style="font-size: 25px;">Latitude 2</label> </td>
+        </tr>
+        <tr>
+            <td><input type="text" class="form-control" id="latitude1"> </td>
+            <td>
             <select name="direction" id="direction">
                 <option value="N">N</option>
                 <option value="S">S</option>
             </select>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="2"><label for="longitude1" class="form-label" style="font-size: 30px;">Longitude 1</label> </td>
-        <td colspan="2"><label for="longitude2" class="form-label" style="font-size: 30px;">Longitude 2</label> </td>
-    </tr>
-    <tr>
-        <td><input type="text" class="form-control" id="longitude1"> </td>
-        <td>
-        <select name="direction" id="direction">
-            <option value="W">W</option>
-            <option value="E">E</option>
-        </select>
-        </td>
-        <td><input type="text" class="form-control" id="longitude2"></td>
-        <td>
+            </td>
+            <td><input type="text" class="form-control" id="latitude2"></td>
+            <td>
+                <select name="direction" id="direction">
+                    <option value="N">N</option>
+                    <option value="S">S</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"><label for="longitude1" class="form-label" style="font-size: 25px;">Longitude 1</label> </td>
+            <td colspan="2"><label for="longitude2" class="form-label" style="font-size: 25px;">Longitude 2</label> </td>
+        </tr>
+        <tr>
+            <td><input type="text" class="form-control" id="longitude1"> </td>
+            <td>
             <select name="direction" id="direction">
                 <option value="W">W</option>
                 <option value="E">E</option>
             </select>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="4"><input style="width: 90%;color:blue; font-size: medium;" type="submit" value="submit"></td>
-    </tr>
-    <tr>
-        <td colspan="4"><input style="width: 90%;" type="text" placeholder="distance" class="distance" name="distance"></td>
-    </tr>
-</table>
+            </td>
+            <td><input type="text" class="form-control" id="longitude2"></td>
+            <td>
+                <select name="direction" id="direction">
+                    <option value="W">W</option>
+                    <option value="E">E</option>
+                </select>
+            </td>
+        </tr>
+        <tr id="submit1">
+            <td  colspan="4"><input style="width: 90%;color:blue; font-size: large;" type="submit" value="submit"></td>
+        </tr>
+        <tr class>
+            <td colspan="4"><input style="width: 90%;" type="text" placeholder="distance" class="distance" name="distance"></td>
+        </tr>
+    </table>
+</form>
+
+
+
 
 *********************************************************************************************************************
 
