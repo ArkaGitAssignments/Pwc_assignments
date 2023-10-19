@@ -1,0 +1,429 @@
+<VISUAL STUDIO>
+//LocationData.cs
+namespace Project_API.Model
+{
+    public class LocationData
+    {
+        //All the variables used 
+        public double Latitude1 { get; set; }
+        public double Longitude1 { get; set;}
+        public double Latitude2 { get; set;}
+        public double Longitude2 { get; set;}
+        public string Lat1D { get; set;}
+        public string Lat2D { get; set;}
+        public string Lon1D { get; set;}
+        public string Lon2D { get;set;}
+        public double Distance { get; set;}
+    }
+}
+_________________________________________________________________________________________________________________________________________________________________________________________________________
+//LocationService.cs
+using Project_API.Model;
+using System;
+using System.Collections.Generic;
+
+namespace Project_API.Service
+{
+    public interface ILocationService
+    {   //interface containing  the function signature to calculate distance
+        List<LocationData> CalculateDistance(double lat1, double lon1, double lat2, double lon2, string lat1d, string lat2d, string lon1d, string lon2d);
+    }
+
+    public class LocationService : ILocationService
+    {
+        public List<LocationData> CalculateDistance(double lat1, double lat2, double lon1, double lon2, string lat1d, string lat2d, string lon1d, string lon2d)
+        {
+            List<LocationData> location = new List<LocationData>(); //Creating an empty list to store the final output
+            
+            //Conversion from Southern Latitude and Western Longitude to perferable coordinate values 
+            if (lat1d.ToLower() == "s")
+                lat1 = -lat1;
+            if (lat2d.ToLower() == "s")
+                lat1 = -lat1;
+            if (lon1d.ToLower() == "w")
+                lon1 = 360 - lon1;
+            if (lon2d.ToLower() == "w")
+                lon2 = 360 - lon2;
+            //Mathematical Logic (Haversine formula)
+            double earthRadius = 3958.75;
+            double dLat = ToRadian(lat2 - lat1);
+            double dLon = ToRadian(lon2 - lon1);
+            double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
+                       Math.Cos(ToRadian(lat1)) * Math.Cos(ToRadian(lat2)) *
+                       Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
+            double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+            double distance = earthRadius * c;
+            //Storing the values into the new list
+            location.Add(new LocationData { Latitude1 = lat1, Latitude2 = lat2, Longitude1 = lon1, Longitude2 = lon2, Lat1D = lat1d, Lat2D = lat2d, Lon1D = lon1d, Lon2D = lon2d, Distance = distance });
+            return location; // returning the list
+        }
+
+        private double ToRadian(double val)
+        {
+            return (Math.PI / 180) * val;
+        }
+    }
+}
+_________________________________________________________________________________________________________________________________________________________________________________________________________
+
+//LoginController.cs
+
+using Project_API.Model;
+using Project_API.Service;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Cors;
+
+namespace Dummy_API1.Controllers
+{
+    [ApiController]
+    [Route("api/location")]
+    public class LocationController : ControllerBase
+    {
+        private readonly ILocationService locationService;
+
+        public LocationController(ILocationService service)
+        {
+            locationService = service;
+        }
+
+        // [HttpPost("calculate-distance")]
+        [HttpGet]
+        [Route("{Latitude1:double}/{Latitude2:double}/{Longitude1:double}/{Longitude2:double}/{Lat1D}/{Lat2D}/{Lon1D}/{Lon2D}")]
+        [EnableCors("AllowOrigin")]
+        public IActionResult CalculateDistance(double Latitude1, double Latitude2, double Longitude1, double Longitude2, string Lat1D, string Lat2D, string Lon1D, string Lon2D)
+        {
+            //double distance = locationService.CalculateDistance(Latitude1, Latitude2, Longitude1,Longitude2, Lat1D, Lat2D, Lon1D, Lon2D);
+            
+            return Ok(locationService.CalculateDistance(Latitude1, Latitude2, Longitude1, Longitude2, Lat1D, Lat2D, Lon1D, Lon2D));
+        }
+    }
+
+}
+
+_________________________________________________________________________________________________________________________________________________________________________________________________________
+_________________________________________________________________________________________________________________________________________________________________________________________________________
+<VISUAL STUDIO CODE>
+//app.module.ts
+
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import {FormsModule} from '@angular/forms'
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+
+import { StudService } from './stud.service';
+import { HttpClientModule } from '@angular/common/http';
+
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule
+  ],
+  providers: [StudService],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+_________________________________________________________________________________________________________________________________________________________________________________________________________
+
+//app.component.html
+
+   <body>
+ 
+                <div class="main-container">  
+                 
+                 <h1>Distance Calculator</h1>
+                      <div class="row">
+                       <div class ="lines">
+                         <label for="Lat1">Latitude 1</label>
+                         <input type="text" [(ngModel)]="Latitude1" name="Latitude1" class="val">            
+                       <select [(ngModel)]="Lat1D" class="opt">
+                           <option>N</option>
+                           <option>S</option>
+                       </select></div>
+                     
+                       <div class ="lines">
+                         <label for="Lat2">Latitude 2</label>
+                         <input type="text" [(ngModel)]="Latitude2"  name="Latitude2" class="val">
+                       <select [(ngModel)]="Lat2D" class="opt">
+                           <option>N</option>
+                           <option>S</option>
+                       </select></div>
+                     </div> 
+                     
+                     <div class="row">
+                       <div class ="lines">
+                         <label for="lon1">Longitude 1</label>
+                         <input type="text" [(ngModel)]="Longitude1" name="Longitude1" class="val">
+                       <select [(ngModel)]="Lon1D" class="opt">
+                           <option>W</option>
+                           <option>E</option>
+                       </select></div>
+                      
+                       <div class ="lines">
+                         <label for="lon2">Longitude 2</label>
+                         <input type="text" [(ngModel)]="Longitude2" name="Longitude2" class="val">
+                       <select [(ngModel)]="Lon2D" class="opt">
+                           <option>W</option>
+                           <option>E</option>
+                       </select></div>
+                     </div>
+                     
+                     <div class="btn">
+                       <input type="submit" value="Calculate" (click)="dist()" class="btn1">
+                       <input type="submit" value="Reset" (click)="erase()" class="btn2">
+                     </div>
+                     
+                   <!--<form>-->
+                       <br>
+                       <div class="section-container">
+                        <table>
+                            <tr><th>Distance (sm)</th></tr>
+                            <tr *ngFor="let s of LocationData">
+                            <td class="val">{{s.distance}}</td>
+                            </tr>
+                            </table> 
+                         </div>
+                         
+                     </div>
+                   </body>
+               
+_________________________________________________________________________________________________________________________________________________________________________________________________________
+
+//app.component.css
+
+body{
+    height:100%;
+    margin:0;
+    padding:150px;
+    background-image: url('https://image.slidesdocs.com/responsive-images/background/travel-cartoon-style-map-powerpoint-background_9acd5076fd__960_540.jpg');
+    background-size: 100%;
+    background-position: center;
+}
+
+
+.main-container{
+    text-align: center;
+    margin-left: 250px;
+    margin-right: 250px;
+    margin-top: 50px;
+    margin-bottom: 100px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    border: 1px solid Gray;
+    background-color: rgba(211,211,211, 0.2);
+    cursor:pointer;
+    transition: background-color 0.17s;
+}
+
+.main-container:hover{
+    background-color: rgba(0,0,0,0.5);    
+}
+
+h1{
+    color: 	#E0FFFF;
+    font-size: 50px;
+    font-weight: bold;
+    font-family: 'Times New Roman', Times, serif;
+    text-decoration: underline;
+}
+
+.row{
+    display: flex;
+    flex-direction: row;
+   align-items: center;
+   justify-content: center;
+
+}
+
+.row input{
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+.lines{
+    padding: 0.15px;
+    margin-top: 20px;
+}
+
+label{
+    color: aliceblue;
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 2rem;
+    font-family:'Courier New', Courier, monospace;
+}
+
+.val{
+    width: 300px;
+    padding: 10px;
+    border:1px solid #ccc;
+    text-align: center;
+    border-radius: 4px;
+    margin-right: 10px;
+    font-size: 2rem;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.opt{
+    font-size: 2rem;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+}
+
+.section-container{
+    text-align: center;
+    margin-left: 400px;
+    margin-right: 400px;
+}
+
+table{
+    margin-top: 10px;
+    font-size: 1.5rem;
+    margin-bottom: 50px;
+    font-size: 2rem;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+th{
+    color: aliceblue;
+    font-size: 2.5rem;
+    font-family:'Courier New', Courier, monospace;
+}
+
+td{
+    background-color: white;
+    color: black;
+    font-size: 2rem;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+
+}
+
+.btn1{
+    margin-right: 100px;
+    margin-top: 50px;
+    font-size: 2rem;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    cursor:pointer;
+    transition: background-color 0.2s;
+}
+
+.btn2{
+    margin-bottom: 50px;
+    font-size: 2rem;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    cursor:pointer;
+    transition: background-color 0.2s;
+}
+
+.btn1:hover{
+    background-color: #AFEEEE;
+}
+
+.btn2:hover{
+    background-color: #AFEEEE;
+}
+
+_________________________________________________________________________________________________________________________________________________________________________________________________________
+
+//stud.service.ts
+
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+
+@Injectable({
+  providedIn: 'root'
+})
+export class StudService {
+
+  constructor(private httpClient:HttpClient) { }
+
+  getDist(Latitude1:number,Latitude2:number, Longitude1:number,Longitude2:number,Lat1D:string,Lat2D:string,Lon1D:string,Lon2D:string):Observable<any[]>{
+    //return this.httpClient.get<any[]>("https://localhost:44376/api/location/12/14/13/15/n/n/w/w");
+    return this.httpClient.get<any[]>("https://localhost:44376/api/location/"+Latitude1+"/"+Latitude2+"/"+Longitude1+"/"+Longitude2+"/"+Lat1D+"/"+Lat2D+"/"+Lon1D+"/"+Lon2D);
+  }
+}
+_________________________________________________________________________________________________________________________________________________________________________________________________________
+
+//app.component.ts
+
+import { Component, OnInit } from '@angular/core';  
+import { StudService } from './stud.service'; 
+import { HttpClient } from '@angular/common/http'; 
+
+@Component({   
+      selector: 'app-root',  
+      templateUrl: './app.component.html',  
+      styleUrls : ['./app.component.css']  
+})  
+export class AppComponent implements OnInit {  
+      
+      public LocationData:any[]=[{}];
+     Latitude1:any="0.0";
+     Latitude2:any="0.0";
+     Longitude1:any="0.0";
+     Longitude2:any="0.0";
+     distance:any="0.0";
+      Lat1D:any;
+      Lat1:any;
+      Lat2D:any;
+      Lon1D:any;
+      Lon2D:any;
+      constructor(private stud: StudService){ 
+
+      }  
+
+      dist():void{
+            //Check condition for the validity of Latitude and Longitude coordinate values
+            if(this.Latitude1>90 || this.Latitude1<0)
+            {
+                  alert('Cannot have a latitude value more than 90 or negative');
+                  this.Latitude1="";
+            }
+            if(this.Latitude2>90 || this.Latitude2<0)
+            {
+                  alert('Cannot have a latitude value more than 90 or negative');
+                  this.Latitude2="";
+            }
+            if(this.Longitude1>180 || this.Longitude1<0)
+            {
+                  alert('Cannot have a longitude value more than 180 or negative');
+                  this.Longitude1="";
+            }
+            if(this.Longitude2>180 || this.Longitude2<0)
+            {
+                  alert('Cannot have a longitude value more than 180 or negative');
+                  this.Longitude2="";
+            }
+            //Sending the value to getDist() function
+            this.stud.getDist(this.Latitude1,this.Latitude2,this.Longitude1,this.Longitude2,this.Lat1D,this.Lat2D,this.Lon1D,this.Lon2D).subscribe((data2:any[]) =>
+            {
+              this.LocationData=data2;
+              console.log(data2);
+            });
+      }
+      erase():void{
+            this.Lat1D="";
+            this.Lat2D="";
+            this.Lon1D="";
+            this.Lon2D="";
+            this.Latitude1="0.0";
+            this.Latitude2="0.0";
+            this.Longitude1="0.0";
+            this.Longitude2="0.0";
+            this.LocationData=[{}];
+      }
+      ngOnInit() { }
+ 
+}
