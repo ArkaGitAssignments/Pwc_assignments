@@ -4,7 +4,7 @@ namespace Project_API.Model
 {
     public class LocationData
     {
-        //All the variables used 
+        //Declaring all the variables
         public double Latitude1 { get; set; }
         public double Longitude1 { get; set;}
         public double Latitude2 { get; set;}
@@ -87,14 +87,12 @@ namespace Dummy_API1.Controllers
             locationService = service;
         }
 
-        // [HttpPost("calculate-distance")]
+        
         [HttpGet]
         [Route("{Latitude1:double}/{Latitude2:double}/{Longitude1:double}/{Longitude2:double}/{Lat1D}/{Lat2D}/{Lon1D}/{Lon2D}")]
         [EnableCors("AllowOrigin")]
         public IActionResult CalculateDistance(double Latitude1, double Latitude2, double Longitude1, double Longitude2, string Lat1D, string Lat2D, string Lon1D, string Lon2D)
         {
-            //double distance = locationService.CalculateDistance(Latitude1, Latitude2, Longitude1,Longitude2, Lat1D, Lat2D, Lon1D, Lon2D);
-            
             return Ok(locationService.CalculateDistance(Latitude1, Latitude2, Longitude1, Longitude2, Lat1D, Lat2D, Lon1D, Lon2D));
         }
     }
@@ -102,7 +100,88 @@ namespace Dummy_API1.Controllers
 }
 
 _________________________________________________________________________________________________________________________________________________________________________________________________________
-_________________________________________________________________________________________________________________________________________________________________________________________________________
+//startup.cs
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
+using Project_API.Service;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Project_API
+{
+    public class Startup
+    {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
+        // This method gets called by the runtime. 
+        public void ConfigureServices(IServiceCollection services)
+        {
+            //This method registers the LocationService class as an implementation to the IlocationService interface
+            services.AddScoped<ILocationService, LocationService>();
+            services.AddControllers();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Project_API", Version = "v1" });
+            });
+            //Allowing my program to run in any origin (connection)
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin",
+                    options =>
+                        options.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                         .AllowAnyMethod());
+            });
+        }
+
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Project_API v1"));
+            }
+
+            app.UseRouting();
+
+            app.UseCors(x => x
+             .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+
+            app.UseHttpsRedirection();
+
+          //  app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+        }
+    }
+}
+
+
+
+________________________________________________________________________________________________________________________________________________________________________________________________________
+________________________________________________________________________________________________________________________________________________________________________________________________________
 <VISUAL STUDIO CODE>
 //app.module.ts
 
@@ -350,7 +429,6 @@ export class StudService {
   constructor(private httpClient:HttpClient) { }
 
   getDist(Latitude1:number,Latitude2:number, Longitude1:number,Longitude2:number,Lat1D:string,Lat2D:string,Lon1D:string,Lon2D:string):Observable<any[]>{
-    //return this.httpClient.get<any[]>("https://localhost:44376/api/location/12/14/13/15/n/n/w/w");
     return this.httpClient.get<any[]>("https://localhost:44376/api/location/"+Latitude1+"/"+Latitude2+"/"+Longitude1+"/"+Longitude2+"/"+Lat1D+"/"+Lat2D+"/"+Lon1D+"/"+Lon2D);
   }
 }
