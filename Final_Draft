@@ -57,3 +57,137 @@
            
        </div>
      </body>
+--------------------------------------------------------------------------------------------------------------------------------
+body{
+    height:100%;
+    margin:0;
+    padding:150px;
+    background-image: url('https://image.slidesdocs.com/responsive-images/background/travel-cartoon-style-map-powerpoint-background_9acd5076fd__960_540.jpg');
+    background-size: 100%;
+    background-position: center;
+}
+
+
+.main-container{
+    text-align: center;
+    margin-left: 250px;
+    margin-right: 250px;
+    margin-top: 50px;
+    margin-bottom: 100px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    border: 1px solid Gray;
+    background-color: rgba(211,211,211, 0.2);
+    cursor:pointer;
+    transition: background-color 0.17s;
+}
+
+.main-container:hover{
+    background-color: rgba(0,0,0,0.5);    
+}
+
+h1{
+    color: 	#E0FFFF;
+    font-size: 50px;
+    font-weight: bold;
+    font-family: 'Times New Roman', Times, serif;
+    text-decoration: underline;
+}
+
+.row{
+    display: flex;
+    flex-direction: row;
+   align-items: center;
+   justify-content: center;
+
+}
+
+.row input{
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+.lines{
+    padding: 0.15px;
+    margin-top: 20px;
+}
+
+label{
+    color: aliceblue;
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 2rem;
+    font-family:'Courier New', Courier, monospace;
+}
+
+.val{
+    width: 300px;
+    padding: 10px;
+    border:1px solid #ccc;
+    text-align: center;
+    border-radius: 4px;
+    margin-right: 10px;
+    font-size: 2rem;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.opt{
+    font-size: 2rem;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+}
+
+.section-container{
+    text-align: center;
+    margin-left: 400px;
+    margin-right: 400px;
+}
+
+table{
+    margin-top: 10px;
+    font-size: 1.5rem;
+    margin-bottom: 50px;
+    font-size: 2rem;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+th{
+    color: aliceblue;
+    font-size: 2.5rem;
+    font-family:'Courier New', Courier, monospace;
+}
+
+td{
+    background-color: white;
+    color: black;
+    font-size: 2rem;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+
+}
+
+.btn1{
+    margin-right: 100px;
+    margin-top: 50px;
+    font-size: 2rem;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    cursor:pointer;
+    transition: background-color 0.2s;
+}
+
+.btn2{
+    margin-bottom: 50px;
+    font-size: 2rem;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    cursor:pointer;
+    transition: background-color 0.2s;
+}
+
+.btn1:hover{
+    background-color: #AFEEEE;
+}
+
+.btn2:hover{
+    background-color: #AFEEEE;
+}
+
