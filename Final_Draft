@@ -56,6 +56,18 @@
            </div>
            
        </div>
+       <select [(ngModel)]="place1"  class="opt">
+        <option>Gurgaon</option>
+        <option>Kolkata</option>
+        <option>Mumbai</option>
+    </select>
+    <input type="submit" value="Set"  (click)="location()">
+    <select [(ngModel)]="place2"  class="opt">
+      <option>Gurgaon</option>
+      <option>Kolkata</option>
+      <option>Mumbai</option>
+  </select>
+  <input type="submit" value="Set"  (click)="location1()">
      </body>
 --------------------------------------------------------------------------------------------------------------------------------
 body{
