@@ -1,8 +1,44 @@
+
 <body>
  
   <div class="main-container">  
    
    <h1>Distance Calculator</h1>
+   <div class="row">
+    <div class="ltn1">
+      <select [(ngModel)]="place1" (click)="location()" class="opt">
+        <option>Ahmedabad</option>
+        <option>Bengaluru</option>
+        <option>Chennai</option>
+        <option>Goa</option>
+        <option>Gurgaon</option>
+        <option>Hyderabad</option>
+        <option>Jaipur</option>
+        <option>Kolkata</option>
+        <option>Mumbai</option>
+        <option>Pune</option>
+  </select>
+  <!-- <input type="submit" value="Set"  (click)="location()" class="btn"> -->
+  <input type="submit" value="Erase" (click)="erase1()" class="btn">
+</div>
+
+<div class="ltn2">
+  <select [(ngModel)]="place2" (click)="location1()" class="opt">
+    <option>Ahmedabad</option>
+    <option>Bengaluru</option>
+    <option>Chennai</option>
+    <option>Goa</option>
+    <option>Gurgaon</option>
+    <option>Hyderabad</option>
+    <option>Jaipur</option>
+    <option>Kolkata</option>
+    <option>Mumbai</option>
+    <option>Pune</option>
+</select>
+<!-- <input type="submit" value="Set"  (click)="location1()" class="btn"> -->
+<input type="submit" value="Erase" (click)="erase2()" class="btn">
+</div>
+   </div>
         <div class="row">
          <div class ="lines">
            <label for="Lat1">Latitude 1</label>
@@ -56,7 +92,7 @@
            </div>
            
        </div>
-       <select [(ngModel)]="place1"  class="opt">
+       <!-- <select [(ngModel)]="place1"  class="opt">
         <option>Gurgaon</option>
         <option>Kolkata</option>
         <option>Mumbai</option>
@@ -67,7 +103,7 @@
       <option>Kolkata</option>
       <option>Mumbai</option>
   </select>
-  <input type="submit" value="Set"  (click)="location1()">
+  <input type="submit" value="Set"  (click)="location1()"> -->
      </body>
 --------------------------------------------------------------------------------------------------------------------------------
 body{
@@ -75,19 +111,18 @@ body{
     margin:0;
     padding:150px;
     background-image: url('https://image.slidesdocs.com/responsive-images/background/travel-cartoon-style-map-powerpoint-background_9acd5076fd__960_540.jpg');
-    background-size: 100%;
+    background-size: cover;
     background-position: center;
+    background-attachment: fixed;
 }
 
 
 .main-container{
+    align-items: center;
     text-align: center;
-    margin-left: 250px;
-    margin-right: 250px;
-    margin-top: 50px;
-    margin-bottom: 100px;
-    padding-top: 50px;
-    padding-bottom: 50px;
+    position: relative;
+    width: 100%;
+    height: 100%;
     border: 1px solid Gray;
     background-color: rgba(211,211,211, 0.2);
     cursor:pointer;
@@ -100,7 +135,7 @@ body{
 
 h1{
     color: 	#E0FFFF;
-    font-size: 50px;
+    font-size: 40px;
     font-weight: bold;
     font-family: 'Times New Roman', Times, serif;
     text-decoration: underline;
@@ -115,7 +150,7 @@ h1{
 }
 
 .row input{
-    margin-left: 20px;
+    margin-left: 40px;
     margin-bottom: 20px;
 }
 
@@ -129,31 +164,34 @@ label{
     display: block;
     font-weight: bold;
     margin-bottom: 5px;
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-family:'Courier New', Courier, monospace;
 }
 
 .val{
-    width: 300px;
-    padding: 10px;
+    width: 200px;
+    padding: 7.5px;
     border:1px solid #ccc;
     text-align: center;
     border-radius: 4px;
     margin-right: 10px;
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 .opt{
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-family: 'Courier New', Courier, monospace;
     font-weight: bold;
+    text-align: center;
 }
 
 .section-container{
-    text-align: center;
-    margin-left: 400px;
-    margin-right: 400px;
+    position: relative;
+    top: 100%;
+    left: 40%;
+    width: 50%;
+    transform: translateY(-10%);
 }
 
 table{
@@ -166,30 +204,31 @@ table{
 
 th{
     color: aliceblue;
-    font-size: 2.5rem;
+    font-size: 1.5rem;
     font-family:'Courier New', Courier, monospace;
 }
 
 td{
     background-color: white;
     color: black;
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-family: Georgia, 'Times New Roman', Times, serif;
 
 }
 
 .btn1{
     margin-right: 100px;
-    margin-top: 50px;
-    font-size: 2rem;
+    margin-top: 30px;
+    font-size: 1.5rem;
     font-family: Georgia, 'Times New Roman', Times, serif;
     cursor:pointer;
     transition: background-color 0.2s;
 }
 
 .btn2{
-    margin-bottom: 50px;
-    font-size: 2rem;
+    margin-bottom: 10px;
+    margin-left: 65px;
+    font-size: 1.5rem;
     font-family: Georgia, 'Times New Roman', Times, serif;
     cursor:pointer;
     transition: background-color 0.2s;
@@ -202,4 +241,325 @@ td{
 .btn2:hover{
     background-color: #AFEEEE;
 }
+
+.ltn1{
+    margin-left: 75px;
+    margin-top: 30px;
+    font-size: 1.5rem;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    text-align: center;
+}
+
+.ltn2{
+    margin-left: 100px;
+    margin-top: 30px;
+    font-size: 1.5rem;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    text-align: center;
+}
+
+.btn{
+    font-size: 1rem;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-weight: bold;
+}
+----------------------------------------------------------------------------------------------------------------------
+
+import { Component, OnInit } from '@angular/core';  
+import { StudService } from './stud.service'; 
+import { HttpClient } from '@angular/common/http'; 
+
+@Component({   
+      selector: 'app-root',  
+      templateUrl: './app.component.html',  
+      styleUrls : ['./app.component.css']  
+})  
+export class AppComponent implements OnInit {  
+      
+      public LocationData:any[]=[{}];
+      public LocationSearch:any[]=[{}];
+     Latitude1:any="0.0";
+     Latitude2:any="0.0";
+     Longitude1:any="0.0";
+     Longitude2:any="0.0";
+     distance:any="0.0";
+      Lat1D:any;
+      Lat1:any;
+      Lat2D:any;
+      Lon1D:any;
+      Lon2D:any;
+      place1:any;
+      place2:any;
+      place3:any;
+      constructor(private stud: StudService){ 
+
+      }  
+
+      dist():void{
+            //Check condition for the validity of Latitude and Longitude coordinate values
+            if(this.Latitude1>90 || this.Latitude1<0)
+            {
+                  alert('Cannot have a latitude value more than 90 or negative');
+                  this.Latitude1="";
+            }
+            if(this.Latitude2>90 || this.Latitude2<0)
+            {
+                  alert('Cannot have a latitude value more than 90 or negative');
+                  this.Latitude2="";
+            }
+            if(this.Longitude1>180 || this.Longitude1<0)
+            {
+                  alert('Cannot have a longitude value more than 180 or negative');
+                  this.Longitude1="";
+            }
+            if(this.Longitude2>180 || this.Longitude2<0)
+            {
+                  alert('Cannot have a longitude value more than 180 or negative');
+                  this.Longitude2="";
+            }
+            //Sending the value to getDist() function
+            this.stud.getDist(this.Latitude1,this.Latitude2,this.Longitude1,this.Longitude2,this.Lat1D,this.Lat2D,this.Lon1D,this.Lon2D).subscribe((data2:any[]) =>
+            {
+              this.LocationData=data2;
+              console.log(data2);
+            });
+      }
+      erase():void{
+            this.Lat1D="";
+            this.Lat2D="";
+            this.Lon1D="";
+            this.Lon2D="";
+            this.Latitude1="0.0";
+            this.Latitude2="0.0";
+            this.Longitude1="0.0";
+            this.Longitude2="0.0";
+            this.place1="";
+            this.place2="";
+            this.LocationData=[{}];
+      }
+      location():void{
+            this.stud.getLocation(this.place1).subscribe((data3:any[]) =>
+            {
+                  console.log(data3);
+                  this.LocationSearch=data3;
+                  this.Latitude1=this.LocationSearch[0].latitude1;
+                  this.Longitude1=this.LocationSearch[0].longitude1;
+                  this.Lat1D=this.LocationSearch[0].lat1D;
+                  this.Lon1D=this.LocationSearch[0].lon1D;
+            });
+      }
+      erase1():void{
+            this.Latitude1="0.0";
+            this.Longitude1="0.0";
+            this.Lat1D="";
+            this.Lon1D="";
+            this.place1="";
+
+      }
+      location1():void{
+            this.stud.getLocation(this.place2).subscribe((data3:any[]) =>
+            {
+                  console.log(data3);
+                  this.LocationSearch=data3;
+                  this.Latitude2=this.LocationSearch[0].latitude1;
+                  this.Longitude2=this.LocationSearch[0].longitude1;
+                  this.Lat2D=this.LocationSearch[0].lat1D;
+                  this.Lon2D=this.LocationSearch[0].lon1D;
+            });
+      }
+      erase2():void{
+            this.Latitude2="0.0";
+            this.Longitude2="0.0";
+            this.Lat2D="";
+            this.Lon2D="";
+            this.place2="";
+
+      }
+ 
+      ngOnInit() { }
+ 
+}
+
+--------------------------------------------------------------------------------------------------------------------
+
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+
+@Injectable({
+  providedIn: 'root'
+})
+export class StudService {
+
+  constructor(private httpClient:HttpClient) { }
+
+  getDist(Latitude1:number,Latitude2:number, Longitude1:number,Longitude2:number,Lat1D:string,Lat2D:string,Lon1D:string,Lon2D:string):Observable<any[]>{
+    return this.httpClient.get<any[]>("https://localhost:44335/api/location/"+Latitude1+"/"+Latitude2+"/"+Longitude1+"/"+Longitude2+"/"+Lat1D+"/"+Lat2D+"/"+Lon1D+"/"+Lon2D);
+  }
+  getLocation(place:string):Observable<any[]>{
+    return this.httpClient.get<any[]>("https://localhost:44335/api/location/"+place);
+  }
+}
+
+-----------------------------------------------------------------------------------------------------------------
+
+create table Coordinates(
+place varchar(100) not null primary key,
+latitude int,
+latDir varchar(26),
+longitude int,
+lonDir varchar(26));
+
+insert into Coordinates values
+('Kolkata',22,'N',88,'E'),
+('Mumbai',19,'N',72,'E'),
+('Gurgaon',28,'N',77,'E'),
+('Goa',15,'N',74,'E'),
+('Hyderabad',17,'N',78,'E'),
+('Bengaluru',12,'N',77,'E'),
+('Jaipur',26,'N',78,'E'),
+('Pune',18,'N',73,'E'),
+('Chennai',13,'N',80,'E'),
+('Ahmedabad',23,'N',72,'E');
+
+select * from Coordinates;
+
+-----------------------------------------------------------------------------------------------------------------
+
+//LocationData.cs
+namespace Project_API.Model
+{
+    public class LocationData
+    {
+        //Declaring all the variables
+        public double Latitude1 { get; set; }
+        public double Longitude1 { get; set; }
+        public double Latitude2 { get; set; }
+        public double Longitude2 { get; set; }
+        public string Lat1D { get; set; }
+        public string Lat2D { get; set; }
+        public string Lon1D { get; set; }
+        public string Lon2D { get; set; }
+        public double Distance { get; set; }
+        public string place { get; set; }
+    }
+}
+
+------------------------------------------------------------------------------------------------------------------
+
+//LocationService.cs
+using Project_API.Model;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace Project_API.Service
+{
+    public interface ILocationService
+    {   //interface containing  the function signature to calculate distance
+        List<LocationData> CalculateDistance(double lat1, double lon1, double lat2, double lon2, string lat1d, string lat2d, string lon1d, string lon2d);
+        public List<LocationData> LocationSearch(string place);
+    }
+
+    public class LocationService : ILocationService
+    {
+        string connectionString = "Data Source=localhost;Initial Catalog=Geo_Location;Integrated Security=True";
+        public List<LocationData> CalculateDistance(double lat1, double lat2, double lon1, double lon2, string lat1d, string lat2d, string lon1d, string lon2d)
+        {
+            List<LocationData> location = new List<LocationData>(); //Creating an empty list to store the final output
+
+            //Conversion from Southern Latitude and Western Longitude to perferable coordinate values 
+            if (lat1d.ToLower() == "s")
+                lat1 = -lat1;
+            if (lat2d.ToLower() == "s")
+                lat1 = -lat1;
+            if (lon1d.ToLower() == "w")
+                lon1 = 360 - lon1;
+            if (lon2d.ToLower() == "w")
+                lon2 = 360 - lon2;
+            //Mathematical Logic (Haversine formula)
+            double earthRadius = 3958.75;
+            double dLat = ToRadian(lat2 - lat1);
+            double dLon = ToRadian(lon2 - lon1);
+            double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
+                       Math.Cos(ToRadian(lat1)) * Math.Cos(ToRadian(lat2)) *
+                       Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
+            double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+            double distance = earthRadius * c;
+            //Storing the values into the new list
+            location.Add(new LocationData { Latitude1 = lat1, Latitude2 = lat2, Longitude1 = lon1, Longitude2 = lon2, Lat1D = lat1d, Lat2D = lat2d, Lon1D = lon1d, Lon2D = lon2d, Distance = distance });
+            return location; // returning the list
+        }
+
+        private double ToRadian(double val)
+        {
+            return (Math.PI / 180) * val;
+        }
+        public List<LocationData> LocationSearch(string place)
+        {
+            List<LocationData > locations = new List<LocationData> ();
+            using (SqlConnection con = new SqlConnection (connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("select * from Coordinates where place = @place", con);
+                cmd.CommandType = CommandType.Text;
+                cmd.Parameters.AddWithValue ("@place", place);
+                con.Open ();
+                SqlDataReader reader = cmd.ExecuteReader ();
+                while (reader.Read ())
+                {
+                    locations.Add (new LocationData {Latitude1= reader.GetInt32(1), Longitude1 = reader.GetInt32(3), Latitude2 = 0, Longitude2 = 0, Lat1D=reader.GetString(2), Lat2D="",Lon1D=reader.GetString(4),Lon2D="",Distance=0,place=place});
+                }
+                return locations;
+            }
+        }
+
+    }
+}
+
+---------------------------------------------------------------------------------------------------------------------
+
+//LoginController.cs
+
+using Project_API.Model;
+using Project_API.Service;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Cors;
+
+namespace Dummy_API1.Controllers
+{
+    [ApiController]
+    [Route("api/location")]
+    public class LocationController : ControllerBase
+    {
+        private readonly ILocationService locationService;
+
+        public LocationController(ILocationService service)
+        {
+            locationService = service;
+        }
+
+
+        [HttpGet]
+        [Route("{Latitude1:double}/{Latitude2:double}/{Longitude1:double}/{Longitude2:double}/{Lat1D}/{Lat2D}/{Lon1D}/{Lon2D}")]
+        [EnableCors("AllowOrigin")]
+        public IActionResult CalculateDistance(double Latitude1, double Latitude2, double Longitude1, double Longitude2, string Lat1D, string Lat2D, string Lon1D, string Lon2D)
+        {
+            return Ok(locationService.CalculateDistance(Latitude1, Latitude2, Longitude1, Longitude2, Lat1D, Lat2D, Lon1D, Lon2D));
+        }
+
+        [HttpGet]
+        [Route("{place}")]
+        public IActionResult LocationSearch(string place)
+        {
+            return Ok(locationService.LocationSearch(place));
+        }
+
+
+    }
+
+}
+
 
