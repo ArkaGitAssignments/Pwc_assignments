@@ -284,3 +284,144 @@ td{
     font-family: Georgia, 'Times New Roman', Times, serif;
     font-weight: bold;
 }
+...................................................................
+
+import { Component, OnInit } from '@angular/core';  
+import { StudService } from './stud.service'; 
+import { HttpClient } from '@angular/common/http'; 
+
+@Component({   
+      selector: 'app-root',  
+      templateUrl: './app.component.html',  
+      styleUrls : ['./app.component.css']  
+})  
+export class AppComponent implements OnInit {  
+      
+      public LocationData:any[]=[{}];
+      public LocationSearch:any[]=[{}];
+     Latitude1:any="0.0";
+     Latitude2:any="0.0";
+     Longitude1:any="0.0";
+     Longitude2:any="0.0";
+     distance:any="0.0";
+      Lat1D:any="";
+      Lat2D:any="";
+      Lon1D:any="";
+      Lon2D:any="";
+      place1:any;
+      place2:any;
+      place3:any;
+      Lat1:any;
+      constructor(private stud: StudService){ 
+
+      }  
+
+      dist():void{
+            if(this.Latitude1=="" ||  this.Latitude2=="" || this.Longitude1=="" || this.Longitude2=="" || this.Lat1D=="" || this.Lat2D=="" || this.Lon2D=="" || this.Lon1D=="")
+            {
+                  alert('All the parameters not declared!!');
+            }
+            //Check condition for the validity of Latitude and Longitude coordinate values
+            if(this.Latitude1>90 || this.Latitude1<0)
+            {
+                  alert('Cannot have a latitude value more than 90 or negative');
+                  this.Latitude1="";
+            }
+            if(this.Latitude2>90 || this.Latitude2<0)
+            {
+                  alert('Cannot have a latitude value more than 90 or negative');
+                  this.Latitude2="";
+            }
+            if(this.Longitude1>180 || this.Longitude1<0)
+            {
+                  alert('Cannot have a longitude value more than 180 or negative');
+                  this.Longitude1="";
+            }
+            if(this.Longitude2>180 || this.Longitude2<0)
+            {
+                  alert('Cannot have a longitude value more than 180 or negative');
+                  this.Longitude2="";
+            }
+
+            if(isNaN(this.Latitude1)==true)
+            {
+                  alert('Coordinate format wrong. Enter Numeric values!!');
+                  this.Latitude1="";
+            }
+            if(isNaN(this.Latitude2)==true)
+            {
+                  alert('Coordinate format wrong. Enter Numeric values!!');
+                  this.Latitude2="";
+            }
+            if(isNaN(this.Longitude1)==true)
+            {
+                  alert('Coordinate format wrong. Enter Numeric values!!');
+                  this.Longitude1="";
+            }
+            if(isNaN(this.Longitude2)==true)
+            {
+                  alert('Coordinate format wrong. Enter Numeric values!!');
+                  this.Longitude2="";
+            }
+            //Sending the value to getDist() function
+            this.stud.getDist(this.Latitude1,this.Latitude2,this.Longitude1,this.Longitude2,this.Lat1D,this.Lat2D,this.Lon1D,this.Lon2D).subscribe((data2:any[]) =>
+            {
+              this.LocationData=data2;
+              console.log(data2);
+            });
+      }
+      erase():void{
+            this.Lat1D="";
+            this.Lat2D="";
+            this.Lon1D="";
+            this.Lon2D="";
+            this.Latitude1="0.0";
+            this.Latitude2="0.0";
+            this.Longitude1="0.0";
+            this.Longitude2="0.0";
+            this.place1="";
+            this.place2="";
+            this.LocationData=[{}];
+      }
+      location():void{
+            this.stud.getLocation(this.place1).subscribe((data3:any[]) =>
+            {
+                  console.log(data3);
+                  this.LocationSearch=data3;
+                  this.Latitude1=this.LocationSearch[0].latitude1;
+                  this.Longitude1=this.LocationSearch[0].longitude1;
+                  this.Lat1D=this.LocationSearch[0].lat1D;
+                  this.Lon1D=this.LocationSearch[0].lon1D;
+            });
+      }
+      erase1():void{
+            this.Latitude1="0.0";
+            this.Longitude1="0.0";
+            this.Lat1D="";
+            this.Lon1D="";
+            this.place1="";
+
+      }
+      location1():void{
+            this.stud.getLocation(this.place2).subscribe((data3:any[]) =>
+            {
+                  console.log(data3);
+                  this.LocationSearch=data3;
+                  this.Latitude2=this.LocationSearch[0].latitude1;
+                  this.Longitude2=this.LocationSearch[0].longitude1;
+                  this.Lat2D=this.LocationSearch[0].lat1D;
+                  this.Lon2D=this.LocationSearch[0].lon1D;
+            });
+      }
+      erase2():void{
+            this.Latitude2="0.0";
+            this.Longitude2="0.0";
+            this.Lat2D="";
+            this.Lon2D="";
+            this.place2="";
+
+      }
+ 
+      ngOnInit() { }
+ 
+}
