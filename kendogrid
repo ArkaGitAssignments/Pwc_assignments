@@ -1,0 +1,37 @@
+<kendo-grid [data]="gridData" [height]="400">
+
+<kendo-grid-column field="details" title="Details"></kendo-grid-column>
+  <!-- Multi-header columns -->
+  <ng-container *ngFor="let header of headers">
+    <kendo-grid-column-group [title]="header">
+      <kendo-grid-column  [resizable]="true"  *ngFor="let subHeader of subHeaders" [title]="header.toLowerCase().replace(' ','')+'_'+subHeader.title" [field]="subHeader.field">
+        <!-- Your cell template goes here -->
+        <ng-template kendoGridCellTemplate let-dataItem>
+          {{ dataItem[header.toLowerCase() + subHeader] }}
+        </ng-template>
+      </kendo-grid-column>
+    </kendo-grid-column-group>
+  </ng-container>
+</kendo-grid>
+
+
+
+  public gridData: any[] = [
+    { examFeesAppTech: 100, examFeesDataAnalytics: 150, travelFeesAppTech: 50, travelFeesDataAnalytics: 75 },
+    // Add more data as needed
+  ];
+  public headers: string[] = ['Courseware Fees', 'Exam Fees', 'Creonow', 'Customer Engagement Fees', 'Specific Contribution', 'Total Amount'];
+  public subHeaders: any[] = [];
+
+  public columnvalue: string[]=[];
+  public ColumnPush(): void{
+    this.subHeaders=[
+    {
+      title: "Apptech", 
+      field: "apptech",
+    },
+    {
+       title: "BP",
+       field: "bp",
+    },
+    ];
